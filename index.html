@@ -7,10 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;700;900&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
     <style>
-        /* 强制 5:1 比例，但在移动端或者极窄屏幕下允许自适应高度以防内容溢出 */
+        /* 调整为 2.1:1 电影宽银幕比例 */
         .ratio-container {
             width: 100%;
-            aspect-ratio: 5 / 1;
+            aspect-ratio: 2.1 / 1;
         }
         
         /* 噪点纹理背景 */
@@ -72,42 +72,43 @@
 
     <div class="viewport-center relative group">
         
-        <!-- 主展示容器：去除了max-width，设置为w-full以撑满屏幕 -->
+        <!-- 主展示容器 -->
         <div class="ratio-container bg-texture relative overflow-hidden shadow-2xl z-10">
             
             <!-- 背景网格 -->
             <div class="absolute inset-0 grid-overlay pointer-events-none z-0"></div>
 
             <!-- 布局容器 -->
-            <div class="absolute inset-0 flex items-end justify-between z-10 p-[2%]">
+            <div class="absolute inset-0 flex items-end justify-between z-10 p-[4%]"> <!-- 增加 padding 以适应高度 -->
                 
                 <!-- 左侧：文字信息区 -->
-                <div class="h-full flex flex-col justify-between w-[40%] z-20">
+                <div class="h-full flex flex-col justify-between w-[45%] z-20 pl-[0.5%]">
                     <!-- 顶部元数据 -->
-                    <div class="flex items-center space-x-6 opacity-60 text-[0.8vw] tracking-[0.2em] uppercase font-mono text-animate font-bold text-neutral-500" style="animation-delay: 0.2s;">
+                    <div class="flex items-center space-x-4 opacity-60 text-[0.9vw] tracking-[0.2em] uppercase font-mono text-animate font-bold text-neutral-500" style="animation-delay: 0.2s;">
                         <span>Lat: 22.5431° N</span>
                         <span class="text-red-500">//</span>
-                        <span>1979 — 2024</span>
+                        <span>1985 — 2020</span>
                     </div>
 
                     <!-- 核心标题 -->
-                    <div class="relative py-2">
-                        <h1 class="text-[8vw] font-black leading-[0.8] tracking-tighter text-neutral-900 mix-blend-multiply text-animate" style="animation-delay: 0.4s;">
+                    <div class="relative py-2 flex flex-col justify-center flex-grow">
+                        <!-- 稍微放大了字号以填充纵向空间 -->
+                        <h1 class="text-[9vw] font-black leading-[0.9] tracking-tighter text-neutral-900 mix-blend-multiply text-animate" style="animation-delay: 0.4s;">
                             深圳
                         </h1>
-                        <h2 class="text-[3vw] font-light italic font-serif text-neutral-600 -mt-[1vw] text-animate ml-[0.5vw]" style="animation-delay: 0.6s;">
-                            Population Evolution
+                        <h2 class="text-[3vw] font-light italic font-serif text-neutral-600 mt-[1vw] text-animate ml-[0.5vw]" style="animation-delay: 0.6s;">
+                            城市人口剧变
                         </h2>
                     </div>
 
                     <!-- 底部说明 -->
-                    <div class="border-t-2 border-black/80 pt-[1vw] w-full text-animate" style="animation-delay: 0.8s;">
+                    <div class="border-t-2 border-black/80 pt-[1.5vw] w-full text-animate" style="animation-delay: 0.8s;">
                         <div class="flex justify-between items-start">
-                            <p class="text-[0.9vw] font-bold text-neutral-800 tracking-wide leading-tight">
+                            <p class="text-[1.1vw] font-bold text-neutral-800 tracking-wide leading-tight">
                                 城市生长数据可视化<br>
-                                <span class="font-normal text-neutral-500 text-[0.7vw]">Urban Growth & Migration Logic</span>
+                                <span class="font-normal text-neutral-500 text-[0.8vw]">Urban Growth & Migration Logic</span>
                             </p>
-                            <div class="text-[0.7vw] font-mono text-right opacity-50">
+                            <div class="text-[0.8vw] font-mono text-right opacity-50">
                                 FIG 1.1<br>GUANGDONG
                             </div>
                         </div>
@@ -115,19 +116,19 @@
                 </div>
 
                 <!-- 右侧：数据可视化艺术 -->
-                <div class="absolute right-0 bottom-0 w-[60%] h-[80%] flex items-end justify-end gap-[0.2%] pr-[2%] opacity-90" id="cityscape">
+                <div class="absolute right-0 bottom-0 w-[55%] h-[75%] flex items-end justify-end gap-[0.2%] pr-[3%] opacity-90" id="cityscape">
                     <!-- Javascript will generate bars here -->
                 </div>
 
-                <!-- 装饰性：年份刻度 -->
-                <div class="absolute top-[12%] right-[3%] flex flex-col items-end space-y-[4vw] font-mono text-[0.7vw] text-neutral-400 font-bold">
-                    <span class="border-r-4 border-neutral-800 pr-2 text-neutral-900">2024</span>
-                    <span class="border-r-2 border-neutral-400 pr-2 opacity-50">2000</span>
-                    <span class="border-r-2 border-neutral-300 pr-2 opacity-30">1980</span>
+                <!-- 装饰性：年份刻度 (增加了 space-y 以适应新高度) -->
+                <div class="absolute top-[15%] right-[4%] flex flex-col items-end space-y-[6vw] font-mono text-[1vw] text-neutral-400 font-bold">
+                    <span class="border-r-4 border-neutral-800 pr-3 text-neutral-900">2020</span>
+                    <span class="border-r-2 border-neutral-400 pr-3 opacity-50">2000</span>
+                    <span class="border-r-2 border-neutral-300 pr-3 opacity-30">1985</span>
                 </div>
                 
                 <!-- 装饰性：巨大的背景水印数字 -->
-                <div class="absolute -top-[12%] right-[10%] text-[18vw] font-bold text-neutral-900/[0.04] select-none pointer-events-none z-0 leading-none tracking-tighter">
+                <div class="absolute -top-[5%] right-[5%] text-[24vw] font-bold text-neutral-900/[0.04] select-none pointer-events-none z-0 leading-none tracking-tighter">
                     17.6M
                 </div>
             </div>
@@ -139,8 +140,8 @@
                       fill="none" 
                       vector-effect="non-scaling-stroke"
                       stroke="#ef4444" 
-                      stroke-width="1.5"
-                      transform="translate(300, 20) scale(1, 0.8)"
+                      stroke-width="2"
+                      transform="translate(400, 20) scale(1, 0.9)"
                       style="opacity: 0.4;"
                       />
             </svg>
@@ -159,7 +160,7 @@
 
         function regenerateCity() {
             cityscapeContainer.innerHTML = '';
-            const numberOfBars = 80; // 增加密度以适应更宽的屏幕
+            const numberOfBars = 60; // 适当减少密度，让柱子更粗壮一点，适应大比例
             
             for (let i = 0; i < numberOfBars; i++) {
                 const bar = document.createElement('div');
