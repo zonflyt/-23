@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳人口演变 - 封面设计</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;700;900&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+    <style>
+        /* 强制 5:1 比例，但在移动端或者极窄屏幕下允许自适应高度以防内容溢出 */
+        .ratio-container {
+            width: 100%;
+            aspect-ratio: 5 / 1;
+        }
+        
+        /* 噪点纹理背景 */
+        .bg-texture {
+            background-color: #f5f5f4;
+            background-image: radial-gradient(#d6d3d1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* 网格线增强 */
+        .grid-overlay {
+            background-image: linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 2% 100%, 100% 20%;
+        }
+
+        /* 动画效果 */
+        @keyframes grow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+        
+        .bar-animate {
+            transform-origin: bottom;
+            animation: grow 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .text-animate {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* 全屏模式下的微调 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #171717; /* neutral-900 */
+            overflow-x: hidden;
+        }
+        
+        /* 使得主容器垂直居中 */
+        .viewport-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewport-center relative group">
+        
+        <!-- 主展示容器：去除了max-width，设置为w-full以撑满屏幕 -->
+        <div class="ratio-container bg-texture relative overflow-hidden shadow-2xl z-10">
+            
+            <!-- 背景网格 -->
+            <div class="absolute inset-0 grid-overlay pointer-events-none z-0"></div>
+
+            <!-- 布局容器 -->
+            <div class="absolute inset-0 flex items-end justify-between z-10 p-[2%]">
+                
+                <!-- 左侧：文字信息区 -->
+                <div class="h-full flex flex-col justify-between w-[40%] z-20">
+                    <!-- 顶部元数据 -->
+                    <div class="flex items-center space-x-6 opacity-60 text-[0.8vw] tracking-[0.2em] uppercase font-mono text-animate font-bold text-neutral-500" style="animation-delay: 0.2s;">
+                        <span>Lat: 22.5431° N</span>
+                        <span class="text-red-500">//</span>
+                        <span>1979 — 2024</span>
+                    </div>
+
+                    <!-- 核心标题 -->
+                    <div class="relative py-2">
+                        <h1 class="text-[8vw] font-black leading-[0.8] tracking-tighter text-neutral-900 mix-blend-multiply text-animate" style="animation-delay: 0.4s;">
+                            深圳
+                        </h1>
+                        <h2 class="text-[3vw] font-light italic font-serif text-neutral-600 -mt-[1vw] text-animate ml-[0.5vw]" style="animation-delay: 0.6s;">
+                            Population Evolution
+                        </h2>
+                    </div>
+
+                    <!-- 底部说明 -->
+                    <div class="border-t-2 border-black/80 pt-[1vw] w-full text-animate" style="animation-delay: 0.8s;">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[0.9vw] font-bold text-neutral-800 tracking-wide leading-tight">
+                                城市生长数据可视化<br>
+                                <span class="font-normal text-neutral-500 text-[0.7vw]">Urban Growth & Migration Logic</span>
+                            </p>
+                            <div class="text-[0.7vw] font-mono text-right opacity-50">
+                                FIG 1.1<br>GUANGDONG
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：数据可视化艺术 -->
+                <div class="absolute right-0 bottom-0 w-[60%] h-[80%] flex items-end justify-end gap-[0.2%] pr-[2%] opacity-90" id="cityscape">
+                    <!-- Javascript will generate bars here -->
+                </div>
+
+                <!-- 装饰性：年份刻度 -->
+                <div class="absolute top-[12%] right-[3%] flex flex-col items-end space-y-[4vw] font-mono text-[0.7vw] text-neutral-400 font-bold">
+                    <span class="border-r-4 border-neutral-800 pr-2 text-neutral-900">2024</span>
+                    <span class="border-r-2 border-neutral-400 pr-2 opacity-50">2000</span>
+                    <span class="border-r-2 border-neutral-300 pr-2 opacity-30">1980</span>
+                </div>
+                
+                <!-- 装饰性：巨大的背景水印数字 -->
+                <div class="absolute -top-[12%] right-[10%] text-[18vw] font-bold text-neutral-900/[0.04] select-none pointer-events-none z-0 leading-none tracking-tighter">
+                    17.6M
+                </div>
+            </div>
+
+            <!-- 曲线层 (SVG Overlay) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" preserveAspectRatio="none">
+                <!-- 模拟指数增长的曲线 -->
+                <path d="M 0,100 Q 40,100 50,90 T 75,80 T 85,60 T 95,40 T 100,20" 
+                      fill="none" 
+                      vector-effect="non-scaling-stroke"
+                      stroke="#ef4444" 
+                      stroke-width="1.5"
+                      transform="translate(300, 20) scale(1, 0.8)"
+                      style="opacity: 0.4;"
+                      />
+            </svg>
+
+        </div>
+
+        <!-- 悬浮控制按钮 -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <button onclick="regenerateCity()" class="bg-black/50 hover:bg-black text-white px-4 py-2 text-xs rounded backdrop-blur-sm transition">重绘图表</button>
+            <button onclick="toggleInvert()" class="bg-black/50 hover:bg-black text-white px-4 py-2 text-xs rounded backdrop-blur-sm transition">深色模式</button>
+        </div>
+    </div>
+
+    <script>
+        const cityscapeContainer = document.getElementById('cityscape');
+
+        function regenerateCity() {
+            cityscapeContainer.innerHTML = '';
+            const numberOfBars = 80; // 增加密度以适应更宽的屏幕
+            
+            for (let i = 0; i < numberOfBars; i++) {
+                const bar = document.createElement('div');
+                
+                const progress = i / numberOfBars;
+                const baseHeight = Math.pow(progress, 3.5) * 100; // 更陡峭的指数增长
+                const randomVariation = Math.random() * 25 * progress;
+                let finalHeight = baseHeight + randomVariation;
+                if (finalHeight > 100) finalHeight = 85 + Math.random() * 15;
+                if (finalHeight < 1 && i > 15) finalHeight = 2; 
+
+                bar.style.height = `${finalHeight}%`;
+                bar.style.width = '100%';
+                
+                // 样式
+                bar.className = 'bg-neutral-900 bar-animate hover:bg-red-600 transition-colors duration-300';
+                bar.style.opacity = 0.5 + (Math.random() * 0.5);
+                bar.style.animationDelay = `${i * 0.015}s`;
+
+                cityscapeContainer.appendChild(bar);
+            }
+        }
+
+        function toggleInvert() {
+            const container = document.querySelector('.ratio-container');
+            container.classList.toggle('invert');
+        }
+
+        // 初始化
+        regenerateCity();
+        
+        // 窗口大小改变时重绘以保证美观
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(regenerateCity, 300);
+        });
+    </script>
+</body>
+</html>
